@@ -16,7 +16,7 @@ const ProfilePage = ({ data, payment = [] }) => {
     }
   }, [data]);
 
-  const BASE_URL = "https://school-diary-v4m0.onrender.com:8000";
+  const BASE_URL = "https://school-diary-v4m0.onrender.com";
 
   const avatarURL = user?.avatar?.startsWith("http")
     ? user.avatar
@@ -44,7 +44,7 @@ const ProfilePage = ({ data, payment = [] }) => {
       setLoading(true);
 
       const res = await axios.patch(
-        "https://school-diary-v4m0.onrender.com:8000/api/user-info/update/",
+        "https://school-diary-v4m0.onrender.com/api/user-info/update/",
         formData,
         {
           headers: {

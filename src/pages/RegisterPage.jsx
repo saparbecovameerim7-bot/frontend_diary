@@ -8,7 +8,7 @@ const RegisterPage = ({ studentClass, setStudentClass }) => {
 
   async function register(user) {
     try {
-      const result = await fetch("https://school-diary-v4m0.onrender.com:8000/api/register/", {
+      const result = await fetch("https://school-diary-v4m0.onrender.com/api/register/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

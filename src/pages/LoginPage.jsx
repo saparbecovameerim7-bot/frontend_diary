@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -9,13 +9,14 @@ const LoginPage = () => {
   });
 
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = "";
   const navigate = useNavigate();
 
-  // если уже авторизован → на главную
-  if (localStorage.getItem("access_token")) {
-    navigate("/")
-  }
+  useEffect(() => {
+    if (localStorage.getItem("access_token")) {
+      navigate("/");
+    }
+  }, []);
 
   function handleChange(e) {
     setForm({
@@ -30,15 +31,19 @@ const LoginPage = () => {
     setError("");
 
     try {
-      const res = await axios.post("https://school-diary-v4m0.onrender.com/api/login/", form);
+      const res = await axios.post(
+        "https://school-diary-v4m0.onrender.com/api/login/",
+        form
+      );
 
-      // сохраняем токены
       localStorage.setItem("access_token", res.data.access_token);
       localStorage.setItem("refresh_token", res.data.refresh_token);
-      if (res.data.access) {
+
+      if (res.data.access_token) {
         navigate("/");
       }
     } catch (err) {
+      console.log(err);
       setError("❌ Неверный логин или пароль");
     } finally {
       setLoading(false);
@@ -58,7 +63,6 @@ const LoginPage = () => {
           placeholder="Имя пользователя"
           value={form.email}
           onChange={handleChange}
-          required
         />
 
         <input
@@ -67,7 +71,6 @@ const LoginPage = () => {
           placeholder="Пароль"
           value={form.password}
           onChange={handleChange}
-          required
         />
 
         <button type="submit" disabled={loading}>

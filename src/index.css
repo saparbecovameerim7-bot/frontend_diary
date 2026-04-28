@@ -809,3 +809,109 @@ section div > div > div:last-child p:last-child {
 .notfound-button:hover {
   background: #6366f1;
 }
+/* Общий контейнер */
+.auth-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* Карточка */
+.auth-card {
+  width: 360px;
+  padding: 30px;
+  border-radius: 20px;
+
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+  color: #e2e8f0;
+}
+
+/* Заголовок */
+.auth-card h2 {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+/* Ошибка */
+.error {
+  background: rgba(255, 0, 0, 0.1);
+  color: #f87171;
+  padding: 10px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+/* Инпуты */
+.auth-card input {
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+
+  outline: none;
+  transition: 0.3s;
+}
+
+.auth-card input::placeholder {
+  color: #94a3b8;
+}
+
+.auth-card input:focus {
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 0 2px #4f46e5;
+}
+
+/* Кнопка */
+.auth-card button {
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+
+  background: linear-gradient(135deg, #4f46e5, #6366f1);
+  color: white;
+  font-weight: bold;
+
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.auth-card button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px rgba(99, 102, 241, 0.4);
+}
+
+.auth-card button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Текст под формой */
+.auth-card p {
+  text-align: center;
+  font-size: 14px;
+  color: #94a3b8;
+}
+
+.auth-card a {
+  color: #6366f1;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.auth-card a:hover {
+  text-decoration: underline;
+}

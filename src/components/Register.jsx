@@ -1,13 +1,9 @@
 import React, { useState } from "react";
-import { redirect, useNavigate } from "react-router-dom";
 
 const Register = ({ register, studentClass, setStudentClass }) => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  
-
-  const navigate = useNavigate();
 
   const classes = [
     "1А", "1Б", "2А", "2Б", "3А", "3Б",
@@ -16,24 +12,32 @@ const Register = ({ register, studentClass, setStudentClass }) => {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    const user = { 
-      username,
-      email, 
-      password, 
-      student_class: studentClass };
-    const res = await register(user);
-    console.log(res);
 
-    if (res?.access_token) {
-      navigate("/");
+    // ✅ защита от undefined
+    if (typeof register !== "function") {
+      console.error("register is not a function");
+      return;
     }
 
+    const user = {
+      username,
+      email,
+      password,
+      student_class: studentClass,
+    };
 
+    try {
+      await register(user);
 
-    setEmail("");
-    setPassword("");
-    setUsername("");
+      // очистка формы
+      setUsername("");
+      setEmail("");
+      setPassword("");
+    } catch (err) {
+      console.error("Ошибка регистрации:", err);
+    }
   }
+
   return (
     <div className="register">
       <form onSubmit={handleSubmit}>
@@ -44,17 +48,17 @@ const Register = ({ register, studentClass, setStudentClass }) => {
           placeholder="username"
           required
         />
+
         <input
           value={password}
-          name="password"
           onChange={(e) => setPassword(e.target.value)}
           type="password"
           placeholder="password"
           required
         />
+
         <select
-          className="register__input"
-          value={studentClass}
+          value={studentClass || ""}
           onChange={(e) => setStudentClass(e.target.value)}
           required
         >
@@ -65,6 +69,7 @@ const Register = ({ register, studentClass, setStudentClass }) => {
             </option>
           ))}
         </select>
+
         <input
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -72,9 +77,8 @@ const Register = ({ register, studentClass, setStudentClass }) => {
           placeholder="email"
           required
         />
-        <button>Registration</button>
-        {/* 
-        {message && <p>{message}</p>} */}
+
+        <button type="submit">Registration</button>
       </form>
     </div>
   );

@@ -16,11 +16,12 @@ import MainLayout from "./Layout/MainLayout";
 import API from "./api/axios";
 
 const App = () => {
+  const [studentClass, setStudentClass] = useState("");
   const [data, setData] = useState({});
   const [schedule, setSchedule] = useState([]);
   const [grades, setGrades] = useState([]);
   const [attendance, setAttendance] = useState([]);
-  const [payment, setPayments] = useState([]);
+  const [payments, setPayments] = useState([]);
 
   const access = localStorage.getItem("access_token");
 
@@ -43,7 +44,7 @@ const App = () => {
   // 👤 USER INFO
   async function loadUser(access) {
     try {
-      const res = await API.get("/user-info/", {
+      const res = await API.get("user-info/", {
         headers: {
           Authorization: `Bearer ${access}`,
         },
@@ -129,13 +130,15 @@ const App = () => {
     <Routes>
       {/* 🔓 PUBLIC */}
       <Route path="/login" element={<LoginPage />} />
-
-      <Route
-        path="/register"
-        element={
-          <RegisterPage />
-        }
-      />
+          <Route
+      path="/register"
+      element={
+        <RegisterPage
+          studentClass={studentClass}
+          setStudentClass={setStudentClass}
+        />
+      }
+    />
 
       {/* 🔐 PRIVATE */}
       <Route element={<ProtectedRoute />}>

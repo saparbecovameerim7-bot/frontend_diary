@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 const HomePage = ({ data, schedule, grades, attendance }) => {
   const date_today = new Date().toISOString().split("T")[0];
-  console.log();
+
 
   const filtered = schedule?.filter((item) => item.date === date_today);
   const filteredGrades = grades?.filter((item) => item.date === date_today);

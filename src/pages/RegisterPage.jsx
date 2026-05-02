@@ -8,36 +8,35 @@ const RegisterPage = ({ studentClass, setStudentClass }) => {
 
   async function register(user) {
     try {
-      const result = await fetch("https://school-diary-v4m0.onrender.com/api/register/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(user),
-      });
+      const result = await fetch(
+        "https://school-diary-v4m0.onrender.com/api/register/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(user),
+        }
+      );
 
       const body = await result.json();
 
-      // ❌ если ошибка от сервера
       if (!result.ok) {
         setMessage(body.message || "Ошибка регистрации");
         return null;
       }
 
-      // ✅ успех
       setMessage(body.message || "Регистрация успешна");
 
-      // сохраняем токены ТОЛЬКО если они есть
-      if (body.access_token && body.refresh_token) {
-        localStorage.setItem("access_token", body.access_token);
-        localStorage.setItem("refresh_token", body.refresh_token);
+      // ✅ ПРАВИЛЬНО
+      if (body.access && body.refresh) {
+        localStorage.setItem("access_token", body.access);
+        localStorage.setItem("refresh_token", body.refresh);
 
-        // редирект на главную
         navigate("/");
       }
 
       return body;
-
     } catch (error) {
       console.error(error);
       setMessage("❌ Ошибка соединения с сервером");
@@ -53,7 +52,6 @@ const RegisterPage = ({ studentClass, setStudentClass }) => {
         setStudentClass={setStudentClass}
       />
 
-      {/* сообщение */}
       {message && (
         <p style={{ textAlign: "center", marginTop: "10px" }}>
           {message}

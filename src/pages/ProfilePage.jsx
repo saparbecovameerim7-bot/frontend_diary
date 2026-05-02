@@ -49,18 +49,18 @@ const ProfilePage = ({ data, payment = [] }) => {
         {
           headers: {
             Authorization: `Bearer ${access_token}`,
-            "Content-Type": "multipart/form-data", // исправил ошибку
+            "Content-Type": "multipart/form-data", 
           },
         }
       );
 
-      console.log("UPDATED:", res.user);
+
       setUser(res.data);
       setLoading(false);
       setFile(null);
       setPreview(null);
     } catch (err) {
-      console.log(err);
+
       setLoading(false);
     }
   }

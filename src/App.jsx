@@ -51,7 +51,7 @@ const App = () => {
       });
 
       setData(res.data);
-
+console.log("data", res.data);
       // 🔥 сразу грузим остальные данные
       await refreshData(res.data);
     } catch (error) {

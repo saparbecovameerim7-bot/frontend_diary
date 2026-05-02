@@ -17,7 +17,7 @@ const RegisterPage = ({ studentClass, setStudentClass }) => {
       });
 
       const body = await result.json();
-
+      console.log(body)
       // ❌ если ошибка от сервера
       if (!result.ok) {
         setMessage(body.message || "Ошибка регистрации");

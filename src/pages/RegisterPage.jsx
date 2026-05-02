@@ -29,8 +29,8 @@ const RegisterPage = ({ studentClass, setStudentClass }) => {
 
       // сохраняем токены ТОЛЬКО если они есть
       if (body.access_token && body.refresh_token) {
-        localStorage.setItem("access_token", body.access);
-        localStorage.setItem("refresh_token", body.refresh);
+        localStorage.setItem("access_token", body.access_token);
+        localStorage.setItem("refresh_token", body.refresh_token);
 
         // редирект на главную
         navigate("/");

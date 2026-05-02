@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -12,12 +12,10 @@ const LoginPage = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  // ✅ ПРАВИЛЬНО
-  useEffect(() => {
-    if (localStorage.getItem("access_token")) {
-      navigate("/");
-    }
-  }, [navigate]);
+  // если уже авторизован → на главную
+  if (localStorage.getItem("access_token")) {
+    navigate("/")
+  }
 
   function handleChange(e) {
     setForm({
@@ -32,15 +30,14 @@ const LoginPage = () => {
     setError("");
 
     try {
-      const res = await axios.post(
-        "https://school-diary-v4m0.onrender.com/api/login/",
-        form
-      );
+      const res = await axios.post("https://school-diary-v4m0.onrender.com/api/login/", form);
 
+      // сохраняем токены
       localStorage.setItem("access_token", res.data.access);
       localStorage.setItem("refresh_token", res.data.refresh);
-
-      navigate("/");
+      if (res.data.access) {
+        navigate("/");
+      }
     } catch (err) {
       setError("❌ Неверный логин или пароль");
     } finally {
@@ -58,7 +55,7 @@ const LoginPage = () => {
         <input
           type="email"
           name="email"
-          placeholder="Email"
+          placeholder="Имя пользователя"
           value={form.email}
           onChange={handleChange}
           required

@@ -32,6 +32,7 @@ const App = () => {
 
   // 🔄 ОБНОВЛЕНИЕ ВСЕХ ДАННЫХ
   const refreshData = async (userData = null) => {
+    const access = localStorage.getItem("access_token");
     try {
       const user = userData || data;
 
@@ -56,7 +57,7 @@ const App = () => {
       });
 
       setData(res.data);
-console.log("data", res.data);
+      console.log("data", res.data);
       // 🔥 сразу грузим остальные данные
       await refreshData(res.data);
     } catch (error) {
@@ -67,12 +68,9 @@ console.log("data", res.data);
   // 📅 SCHEDULE
   async function loadSchedule(access, student_class) {
     try {
-      const res = await API.get(
-        `schedule/?student_class=${student_class}`,
-        {
-          headers: { Authorization: `Bearer ${access}` },
-        }
-      );
+      const res = await API.get(`schedule/?student_class=${student_class}`, {
+        headers: { Authorization: `Bearer ${access}` },
+      });
       setSchedule(res.data);
     } catch (error) {
       console.error(`Ошибка schedule: ${error}`);
@@ -82,12 +80,9 @@ console.log("data", res.data);
   // 💳 PAYMENT
   async function loadPayment(access, username) {
     try {
-      const res = await API.get(
-        `payment/?username=${username}`,
-        {
-          headers: { Authorization: `Bearer ${access}` },
-        }
-      );
+      const res = await API.get(`payment/?username=${username}`, {
+        headers: { Authorization: `Bearer ${access}` },
+      });
       setPayments(res.data);
     } catch (error) {
       console.error(`Ошибка payment: ${error}`);
@@ -97,12 +92,9 @@ console.log("data", res.data);
   // 📊 GRADES
   async function loadGrades(access, username) {
     try {
-      const res = await API.get(
-        `/grades/?username=${username}`,
-        {
-          headers: { Authorization: `Bearer ${access}` },
-        }
-      );
+      const res = await API.get(`/grades/?username=${username}`, {
+        headers: { Authorization: `Bearer ${access}` },
+      });
       setGrades(res.data);
     } catch (error) {
       console.error(`Ошибка grades: ${error}`);
@@ -112,12 +104,9 @@ console.log("data", res.data);
   // 📌 ATTENDANCE
   async function loadAttendance(access, username) {
     try {
-      const res = await API.get(
-        `/attendance/?username=${username}`,
-        {
-          headers: { Authorization: `Bearer ${access}` },
-        }
-      );
+      const res = await API.get(`/attendance/?username=${username}`, {
+        headers: { Authorization: `Bearer ${access}` },
+      });
       setAttendance(res.data);
     } catch (error) {
       console.error(`Ошибка attendance: ${error}`);
@@ -126,20 +115,19 @@ console.log("data", res.data);
 
   // 🚀 INIT
 
-
   return (
     <Routes>
       {/* 🔓 PUBLIC */}
       <Route path="/login" element={<LoginPage />} />
-          <Route
-      path="/register"
-      element={
-        <RegisterPage
-          studentClass={studentClass}
-          setStudentClass={setStudentClass}
-        />
-      }
-    />
+      <Route
+        path="/register"
+        element={
+          <RegisterPage
+            studentClass={studentClass}
+            setStudentClass={setStudentClass}
+          />
+        }
+      />
 
       {/* 🔐 PRIVATE */}
       <Route element={<ProtectedRoute />}>
@@ -173,10 +161,7 @@ console.log("data", res.data);
             element={<SchedulePage schedule={schedule} />}
           />
 
-          <Route
-            path="/grades"
-            element={<GradesPage grades={grades} />}
-          />
+          <Route path="/grades" element={<GradesPage grades={grades} />} />
 
           <Route
             path="/attendance"

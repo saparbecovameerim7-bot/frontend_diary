@@ -23,7 +23,12 @@ const App = () => {
   const [attendance, setAttendance] = useState([]);
   const [payment, setPayments] = useState([]);
 
-  const access = localStorage.getItem("access_token");
+  useEffect(() => {
+    const access = localStorage.getItem("access_token");
+    if (access) {
+      loadUser(access);
+    }
+  }, []);
 
   // 🔄 ОБНОВЛЕНИЕ ВСЕХ ДАННЫХ
   const refreshData = async (userData = null) => {
@@ -120,11 +125,7 @@ console.log("data", res.data);
   }
 
   // 🚀 INIT
-  useEffect(() => {
-    if (access) {
-      loadUser(access);
-    }
-  }, []);
+
 
   return (
     <Routes>

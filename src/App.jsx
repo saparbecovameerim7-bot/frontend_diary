@@ -21,7 +21,7 @@ const App = () => {
   const [schedule, setSchedule] = useState([]);
   const [grades, setGrades] = useState([]);
   const [attendance, setAttendance] = useState([]);
-  const [payments, setPayments] = useState([]);
+  const [payment, setPayments] = useState([]);
 
   const access = localStorage.getItem("access_token");
 

@@ -12,7 +12,6 @@ const LoginPage = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  // ✅ правильный редирект (не в render!)
   useEffect(() => {
     if (localStorage.getItem("access_token")) {
       navigate("/");

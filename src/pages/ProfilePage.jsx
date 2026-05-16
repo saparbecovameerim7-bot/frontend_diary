@@ -18,10 +18,10 @@ const ProfilePage = ({ data, payment = [] }) => {
 
   const BASE_URL = "https://school-diary-v4m0.onrender.com";
 
-  const avatarURL = user?.avatar
-  ? `${BASE_URL}${user.avatar}?v=${user?.updated_at || Date.now()}`
-  : null;
-  
+  const avatarURL = user?.avatar?.startsWith("http")
+    ? user.avatar
+    : `${BASE_URL}${user?.avatar}`;
+
   const handleImage = (e) => {
     const img = e.target.files[0];
     setFile(img);

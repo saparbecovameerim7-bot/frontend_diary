@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const BASE_URL = "https://school-diary-v4m0.onrender.com";
-
 const ProfilePage = ({ data, payment = [] }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState();
   const [showPayments, setShowPayments] = useState(false);
   const [openAvatar, setOpenAvatar] = useState(false);
 
@@ -13,15 +11,17 @@ const ProfilePage = ({ data, payment = [] }) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (data) setUser(data);
+    if (data) {
+      setUser(data);
+    }
   }, [data]);
 
-  const avatarURL = user?.avatar
-    ? user.avatar.startsWith("http")
-      ? user.avatar
-      : `${BASE_URL}${user.avatar}?v=${user?.updated_at || Date.now()}`
-    : null;
+  const BASE_URL = "https://school-diary-v4m0.onrender.com";
 
+  const avatarURL = user?.avatar
+  ? `${BASE_URL}${user.avatar}?v=${user?.updated_at || Date.now()}`
+  : null;
+  
   const handleImage = (e) => {
     const img = e.target.files[0];
     setFile(img);
@@ -44,29 +44,23 @@ const ProfilePage = ({ data, payment = [] }) => {
       setLoading(true);
 
       const res = await axios.patch(
-        `${BASE_URL}/api/user-info/update/`,
+        "https://school-diary-v4m0.onrender.com/api/user-info/update/",
         formData,
         {
           headers: {
             Authorization: `Bearer ${access_token}`,
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "multipart/form-data", 
           },
         }
       );
 
-      // 🔥 ВАЖНО: принудительно ломаем кеш аватарки
-      setUser({
-        ...res.data,
-        avatar: res.data.avatar
-          ? `${res.data.avatar}?v=${Date.now()}`
-          : null,
-      });
 
+      setUser(res.data);
+      setLoading(false);
       setFile(null);
       setPreview(null);
     } catch (err) {
-      console.log(err);
-    } finally {
+
       setLoading(false);
     }
   }
@@ -79,6 +73,7 @@ const ProfilePage = ({ data, payment = [] }) => {
 
       {/* PROFILE CARD */}
       <div className="profile-card">
+        {/* AVATAR */}
         <div className="avatar-wrapper">
           <img
             src={preview || avatarURL}
@@ -87,6 +82,7 @@ const ProfilePage = ({ data, payment = [] }) => {
             className="avatar"
           />
 
+          {/* UPLOAD BUTTON */}
           <label className="avatar-upload">
             +
             <input
@@ -98,6 +94,7 @@ const ProfilePage = ({ data, payment = [] }) => {
           </label>
         </div>
 
+        {/* INFO */}
         <div>
           <h2>{user?.username}</h2>
           <p>{user?.email}</p>
@@ -105,7 +102,7 @@ const ProfilePage = ({ data, payment = [] }) => {
         </div>
       </div>
 
-      {/* SAVE */}
+      {/* SAVE BUTTON */}
       <button
         onClick={updateProfile}
         disabled={loading}
@@ -114,12 +111,14 @@ const ProfilePage = ({ data, payment = [] }) => {
         {loading ? "Сохранение..." : "💾 Сохранить изменения"}
       </button>
 
-      {/* DEBT */}
+      {/* DEBT WARNING */}
       {hasDebt && (
-        <div className="warning">⚠️ Есть неоплаченные месяцы</div>
+        <div className="warning">
+          ⚠️ Есть неоплаченные месяцы
+        </div>
       )}
 
-      {/* PAYMENTS */}
+      {/* PAYMENTS BUTTON */}
       <button
         onClick={() => setShowPayments(!showPayments)}
         className="btn success"
@@ -127,6 +126,7 @@ const ProfilePage = ({ data, payment = [] }) => {
         💳 {showPayments ? "Скрыть платежи" : "Показать платежи"}
       </button>
 
+      {/* PAYMENTS */}
       {showPayments && (
         <div className="payments-grid">
           {payment.map((p) => (
@@ -141,13 +141,16 @@ const ProfilePage = ({ data, payment = [] }) => {
         </div>
       )}
 
-      {/* MODAL */}
+      {/* AVATAR MODAL */}
       {openAvatar && (
         <div
-          className="avatar-modal"
           onClick={() => setOpenAvatar(false)}
+          className="avatar-modal"
         >
-          <img src={preview || avatarURL} alt="avatar" />
+          <img
+            src={preview || avatarURL}
+            alt="avatar"
+          />
         </div>
       )}
     </main>
